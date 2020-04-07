@@ -1,0 +1,119 @@
+:root {
+    --main-color: rgb(165, 214, 167 );
+}
+
+body, html {
+    margin: 0px;
+    height: 100%;
+    width: auto;
+    font-family: 'Baloo Thambi 2', cursive;
+    background: white;
+}
+.header {
+    font-size: 45px;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-top: 25%px;
+    background-color: var(--main-color);
+}
+#main{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    flex-basis: 30%;
+}
+.book {
+    max-width: 350px ;
+    font-size: 25px;
+    display: block;
+    margin: auto;
+    width: 25%;
+    margin-top:20px;
+    padding: 25px;
+    margin-bottom: 20px;
+    -webkit-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
+    box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
+    border: 1px solid slategray;
+    border-radius: 5px;
+    
+}
+
+.book:hover {
+    transform: scale(1.1);
+}
+
+.btn {
+    outline: none;
+    border-radius: 7px;
+    background-color: var(--main-color);
+    border: 0px;
+    color: aliceblue;
+    font-size: 20px;
+}
+.buttons-div{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#add {
+    margin: auto;
+}
+.form-div {
+    position: absolute;
+    border: 3px solid rgb(201, 204, 39);
+    background-color: beige;
+    text-justify: auto;
+    margin: auto;
+    left :40%;
+    width: 550px;
+    height: 400px;
+
+}
+
+.edit-form {
+    margin-left: 30px;
+    -ms-text-justify: auto;
+}
+.edit-form h1 {
+    margin-bottom: 10px;
+    margin-top: 15px;
+    left: 70px;
+}
+.form-btn {
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 25px;
+    margin-top: 6%;
+}
+p {
+    font-size: 20px;
+    margin: 10px;
+}
+.input-box {
+    border-radius: 5px;
+    font-size: 15px;
+    border : 0px;
+    padding: 9px;
+}
+
+.buttons {
+    margin-top: 5% ;
+    display: flex;
+    justify-content: center;
+}
+
+#add {
+    font-size: 35px;
+}
+
+
+.delete-btn {
+    height: 30px;
+    width: 30px;
+    background-color: rgb(224, 73, 53);
+    border-radius: 5px;
+    position: relative;
+}
