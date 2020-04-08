@@ -10,6 +10,8 @@
 let myLibrary = [];
 const main = document.getElementById('main');
 const addBtn = document.getElementById('add');
+const colorBtn = document.getElementById('color');
+const root = document.documentElement;
 
 ///////////////////////
 ////// functions //////
@@ -117,6 +119,7 @@ function openForm(purpose, book) {
         let newPages = pagesInput.value;
         let newCover = coverInput.value;
         modifyBook(book, newTitle, newAuthor, newPages, newCover);
+        formDiv.style.display = "none";
         });
     
     formBtn.appendChild(confirmBtn);    
@@ -216,6 +219,9 @@ function populateLibrary() {
     }
 }
 
+function randomColor () {
+    return "#"+((1<<24)*Math.random()|0).toString(16);
+}
 
 ///////////////////////
 ////// buttons  ///////
@@ -224,6 +230,12 @@ addBtn.addEventListener('click', () => {
     let newBook = addBook('title','author', 500);
     openForm("Creating ", newBook);
 });
+
+colorBtn.addEventListener('click', () => {
+    root.style.setProperty("--main-color", randomColor());
+});
+
+
 
 
 ///////////////////////
