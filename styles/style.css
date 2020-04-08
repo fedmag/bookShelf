@@ -8,22 +8,21 @@ body, html {
     height: 100%;
     width: auto;
     font-family: var(--main-font);
-    background: white;
-    
+    background: white;    
 }
 .header {
     position: relative;
-    font-size: 55px;
     text-align: center;
-    margin-bottom: 40px;
-    padding: 15px;
+    margin-bottom: 30px;
+    padding: 10px;
     background-color: var(--main-color);
+
 }
 
 .header h1 {
     color: azure;
     font-size: 50px;
-    font-weight: 100;
+    font-weight: 400;
 }
 #main{
     display: flex;
@@ -33,21 +32,21 @@ body, html {
     font-weight: 100;
 }
 .book {
-    max-width: 300px ;
     font-size: 25px;
     display: block;
     margin: auto;
-    width: 25%;
-    height: auto;
+    width: 330px;
+    height: 400px;
     margin-top:20px;
     padding: 25px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     -webkit-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
     -moz-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
     box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
     border: 1px solid slategray;
     border-radius: 5px; 
     transition-duration: 0.1s;   
+    overflow: hidden;
 }
 
 .book:hover {
@@ -58,6 +57,7 @@ body, html {
     max-width: 200px;
     height: 190px;
     margin-left: auto;
+    margin-bottom: 35px;
     border-radius: 50%;
 }
 .center {
@@ -82,6 +82,7 @@ body, html {
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
 
@@ -105,7 +106,7 @@ body, html {
 
 .edit-form {
     margin-left: 30px;
-    -ms-text-justify: auto;
+    text-justify: auto;
     z-index: 10;
 }
 .edit-form h1 {
@@ -125,6 +126,7 @@ p {
     margin: 10px;
 }
 hr {
+    margin-top: 35px;
     size: 1px;
     width: 80%;
 }
@@ -149,7 +151,7 @@ hr {
 }
 
 #add, #color {
-    font-size: 35px;
+    font-size: 20px;
     margin-bottom: 20px;
     color: white;
     padding: 15px;
@@ -191,10 +193,14 @@ hr {
     transform: scale(1.05);
   }
   .footer {
-    margin-top: 50px;
-    margin-bottom: 70px;
+    margin-top: 0px;
+    line-height: 10px;
+    padding-bottom: 20px;
+    padding-top: 0px;
     font-size: 20px;
     text-align: center;
+    background-color: var(--main-color);
+
 }
   #logo {
     width: 30px;
@@ -208,9 +214,9 @@ hr {
     }
     #main {
         flex-basis: 100%;
-        
+
     }
-    .book {width: 80%;}
+    .book {width: 600px;}
     .cover {
         max-width: 150px;
         max-height: 150px;
@@ -236,7 +242,9 @@ hr {
         flex-basis: 100%;
         flex-direction: column;
     }
-    .book {width: 80%;}
+    .book {
+        width: 400px;
+    }
     .cover {
         max-width: 150px;
         max-height: 150px;

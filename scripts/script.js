@@ -175,7 +175,7 @@ function populateLibrary() {
                 // delete button
                 let deleteBtn = document.createElement("button");
                 deleteBtn.className = "delete-btn btn";
-                deleteBtn.textContent = "x";
+                deleteBtn.textContent = "X";
                 // in order to stop the code from running automatically once needs to say that on click it must execute a function and THEN call the function.
                 deleteBtn.addEventListener('click', () => {
                     newDiv.innerHTML = '';
@@ -220,7 +220,10 @@ function populateLibrary() {
 }
 
 function randomColor () {
-    return "#"+((1<<24)*Math.random()|0).toString(16);
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return "rgb(" + r + "," + g + "," + b + ")";
 }
 
 ///////////////////////
