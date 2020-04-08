@@ -28,6 +28,7 @@ body, html {
     display: block;
     margin: auto;
     width: 25%;
+    height: auto;
     margin-top:20px;
     padding: 25px;
     margin-bottom: 20px;
@@ -42,6 +43,19 @@ body, html {
 .book:hover {
     transform: scale(1.05);
 }
+.cover {
+    width: fit-content;
+    max-width: 200px;
+    height: 190px;
+    margin-left: auto;
+    border-radius: 50%;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+  }
 
 .btn {
     outline: none;
@@ -72,7 +86,7 @@ body, html {
     margin: auto;
     left :40%;
     width: 300px;
-    height: 400px;
+    height: 500px;
     z-index: 10;
 
 }
@@ -123,6 +137,9 @@ hr {
     color: white;
     padding: 15px;
     font-family: 'Comic Neue', cursive;
+    -webkit-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
+    box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
 }
  #add:hover {
      transform: scale(1.05);
@@ -161,4 +178,5 @@ hr {
   #logo {
     width: 30px;
     height: auto;
+    padding-top: 25px;
 }

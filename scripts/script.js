@@ -16,11 +16,11 @@ const addBtn = document.getElementById('add');
 ///////////////////////
 
 // constructor for book
-function Book(title, author, pages, alreadyRead) {
+function Book(title, author, pages, cover) {
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.alreadyRead = alreadyRead;
+    this.cover = cover;
 }
 // each book has this method that returns all the information
 Book.prototype.info = function() {
@@ -29,8 +29,9 @@ Book.prototype.info = function() {
 }
 
 // adding books
-function addBook(title, author, pages) {
-    const newBook = new Book(title, author, pages);
+function addBook(title, author, pages, cover) {
+    if (typeof cover == 'undefined') cover = "https://image.freepik.com/free-vector/blank-book-cover-template-with-pages-front-side-standing_47649-397.jpg";
+    const newBook = new Book(title, author, pages, cover);
     myLibrary.push(newBook);
     return newBook;
 }
@@ -45,12 +46,11 @@ function deleteBook (book) {
     }
 }
 
-function modifyBook(book, newTitle, newAuthor, newPages) {
+function modifyBook(book, newTitle, newAuthor, newPages, newCover) {
     if (newTitle != "") book.title = newTitle;
     if (newAuthor != "")book.author = newAuthor;
-    if (typeof(parseInt(newPages)) != "number") alert("pages must be a number");
-    else if (newPages != "") book.pages = parseInt(newPages);
-    // book.alreadyRead = newRead;
+    if (!isNaN(newPages) && newPages != "") book.pages = newPages;
+    if (newCover != "") book.cover = newCover;
     populateLibrary();
 }
 
@@ -70,29 +70,30 @@ function openForm(purpose, book) {
     formTitle.innerHTML = purpose + " book";
     form.appendChild(formTitle);
     // inputs boxes 
-    // let titleBox = document.createElement('p'); // title
-    // titleBox.textContent = "Title";
-    // form.appendChild(titleBox);
+
+    // title box
     let titleInput = document.createElement("input");
     titleInput.className = "input-box";
     titleInput.placeholder = "New title";
     form.appendChild(titleInput);
-    //
-    // let authorBox = document.createElement('p'); // author
-    // authorBox.textContent = "Author";
-    // form.appendChild(authorBox);
+    // autrhor box
     let authorInput = document.createElement("input");
     authorInput.className = "input-box";
     authorInput.placeholder = "New author";
     form.appendChild(authorInput);
     //
-    // let pagesBox = document.createElement('p'); // pages
-    // pagesBox.textContent = "Pages";
-    // form.appendChild(pagesBox);
+    // pages box
     let pagesInput = document.createElement("input");
     pagesInput.className = "input-box";
     pagesInput.placeholder = "New pages";
     form.appendChild(pagesInput);
+    //
+    // cover box
+    let coverInput = document.createElement("input");
+    coverInput.className = "input-box";
+    coverInput.placeholder = "New cover url";
+    form.appendChild(coverInput);
+
     
     //buttons on the form
     // close button
@@ -114,7 +115,8 @@ function openForm(purpose, book) {
         let newAuthor = authorInput.value;
         let newTitle = titleInput.value;
         let newPages = pagesInput.value;
-        modifyBook(book, newTitle, newAuthor, newPages);
+        let newCover = coverInput.value;
+        modifyBook(book, newTitle, newAuthor, newPages, newCover);
         });
     
     formBtn.appendChild(confirmBtn);    
@@ -123,23 +125,38 @@ function openForm(purpose, book) {
 function populateLibrary() {
     // refreshing the page
     main.innerHTML ='';
-
+    
     for(let book of myLibrary) {
         // each book goes in a new div whose class is BOOK
         let newDiv = document.createElement('div');
         newDiv.className = "book";
 
             // inside a book div there are separate divs for each characteristics
+            //cover
+            let cover = document.createElement("img");
+            cover.className = "cover center";
+            if(book.cover != "" || typeof book.cover === undefined || book.cover == null){
+                cover.src = book.cover;
+                cover.alt = "";
+            }
+            let coverLink = document.createElement('a');
+            coverLink.href = "";
+            coverLink.addEventListener('click', () =>{
+                window.open(book.cover, "-blank");
+            })
+            coverLink.appendChild(cover);
+            newDiv.appendChild(coverLink);
+            //title
             let title = document.createElement("p");
             title.className = "title";
             title.textContent = `Title: ${book.title}`;
             newDiv.appendChild(title);
-
+            //author
             let author = document.createElement("p");
             author.className = "author";
             author.innerHTML = `Author:   ${book.author}`;
             newDiv.appendChild(author);
-
+            //pages
             let pages = document.createElement("p");
             pages.className = "pages";
             pages.textContent = `Pages: \t\t ${book.pages}`;
@@ -212,7 +229,7 @@ addBtn.addEventListener('click', () => {
 ///////////////////////
 //////// test /////////
 ///////////////////////
-addBook('I promessi sposi', 'Alessandro Manzoni', 720);
-addBook('The lord of the rings', 'J. R. R. Tolkien', 2000);
-addBook('IT', 'Stephen King', 1138 );
+addBook('I promessi sposi', 'Alessandro Manzoni', 720, "https://iicstoccarda.esteri.it/iic_stoccarda/resource/img/2019/01/manzonipromessisposi.jpg");
+addBook('The lord of the rings', 'J. R. R. Tolkien', 2000, "https://vignette.wikia.nocookie.net/lotr/images/d/db/51eq24cRtRL._SX331_BO1%2C204%2C203%2C200_.jpg/revision/latest?cb=20190723164240");
+addBook('IT', 'Stephen King', 1138, "https://i.pinimg.com/originals/11/c1/8f/11c18fbb50b3abe089e5f519cc1988cb.png" );
 populateLibrary();
