@@ -61,7 +61,7 @@ function openForm(purpose, book) {
     form.className = "edit-form";
     let formBtn = document.createElement('div'); // input container
     formBtn.className = "form-btn";
-    main.appendChild(formDiv);
+    document.body.appendChild(formDiv);
     formDiv.appendChild(form);
     formDiv.appendChild(formBtn);
 
@@ -99,7 +99,7 @@ function openForm(purpose, book) {
     // close button
     let closeBtn = document.createElement('button');
     closeBtn.className = "close-btn btn";
-    closeBtn.textContent = "Close form";
+    closeBtn.textContent = "Close";
     // on click I want the form to become transparent
     closeBtn.addEventListener('click', () => {
         formDiv.style.display = 'none';
@@ -109,7 +109,7 @@ function openForm(purpose, book) {
     // confirm button
     let confirmBtn = document.createElement('button');
     confirmBtn.className = "confirm-btn btn";
-    confirmBtn.textContent = "Confirm form";
+    confirmBtn.textContent = "Submit";
     // on click I call the function that modifies the book
     confirmBtn.addEventListener('click', () => {
         let newAuthor = authorInput.value;

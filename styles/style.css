@@ -10,6 +10,7 @@ body, html {
     background: white;
 }
 .header {
+    position: relative;
     font-size: 55px;
     text-align: center;
     margin-bottom: 40px;
@@ -76,19 +77,21 @@ body, html {
 
 
 .form-div {
-    position: absolute;
+
+    position: sticky;
+    bottom: 13%;
+    left: 34%;
+    margin: auto;
+    width: 340px;
+    height: 500px;
+    z-index: 10;
+
     border: 1px solid slategray;
     background-color: white;
     text-justify: auto;
     -webkit-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
     -moz-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
     box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
-    margin: auto;
-    left :40%;
-    width: 300px;
-    height: 500px;
-    z-index: 10;
-
 }
 
 .edit-form {
@@ -194,6 +197,18 @@ hr {
         max-width: 150px;
         max-height: 150px;
     }
+    .footer {
+        font-size: 15px;
+    }
+
+    .form-div {
+        position: sticky;
+        width: 340;
+        left: 0px;
+        height: 500px;
+        margin: auto;
+    }
+
 }
 @media (max-width: 800px) {
     html{
@@ -208,4 +223,12 @@ hr {
         max-width: 150px;
         max-height: 150px;
     }
+    .form-div {
+        position: sticky;
+        width: 340;
+        left: 0px;
+        height: 500px;
+        margin: auto;
+    }
+
 }
