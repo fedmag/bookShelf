@@ -29,9 +29,10 @@ Book.prototype.info = function() {
 }
 
 // adding books
-function addBook(book, title, author, pages) {
+function addBook(title, author, pages) {
     const newBook = new Book(title, author, pages);
     myLibrary.push(newBook);
+    return newBook;
 }
 
 function deleteBook (book) {
@@ -47,13 +48,13 @@ function deleteBook (book) {
 function modifyBook(book, newTitle, newAuthor, newPages) {
     if (newTitle != "") book.title = newTitle;
     if (newAuthor != "")book.author = newAuthor;
-    if (typeof(parseInt(newPages)) != "number" || isNaN(parseInt(newPages))) alert("pages must be a number");
+    if (typeof(parseInt(newPages)) != "number") alert("pages must be a number");
     else if (newPages != "") book.pages = parseInt(newPages);
     // book.alreadyRead = newRead;
     populateLibrary();
 }
 
-function openForm(book) {
+function openForm(purpose, book) {
     let formDiv = document.createElement('div'); // outer container
     formDiv.className = "form-div";
     let form = document.createElement('form'); // input container
@@ -66,31 +67,31 @@ function openForm(book) {
 
     // content on the form
     let formTitle = document.createElement('h1');
-    formTitle.innerHTML = 'edit book';
+    formTitle.innerHTML = purpose + " book";
     form.appendChild(formTitle);
     // inputs boxes 
-    let titleBox = document.createElement('p'); // title
-    titleBox.textContent = "Title";
-    form.appendChild(titleBox);
+    // let titleBox = document.createElement('p'); // title
+    // titleBox.textContent = "Title";
+    // form.appendChild(titleBox);
     let titleInput = document.createElement("input");
     titleInput.className = "input-box";
-    titleInput.placeholder = "Insert new title";
+    titleInput.placeholder = "New title";
     form.appendChild(titleInput);
     //
-    let authorBox = document.createElement('p'); // author
-    authorBox.textContent = "Author";
-    form.appendChild(authorBox);
+    // let authorBox = document.createElement('p'); // author
+    // authorBox.textContent = "Author";
+    // form.appendChild(authorBox);
     let authorInput = document.createElement("input");
     authorInput.className = "input-box";
-    authorInput.placeholder = "Insert new author";
+    authorInput.placeholder = "New author";
     form.appendChild(authorInput);
     //
-    let pagesBox = document.createElement('p'); // pages
-    pagesBox.textContent = "Pages";
-    form.appendChild(pagesBox);
+    // let pagesBox = document.createElement('p'); // pages
+    // pagesBox.textContent = "Pages";
+    // form.appendChild(pagesBox);
     let pagesInput = document.createElement("input");
     pagesInput.className = "input-box";
-    pagesInput.placeholder = "Insert new pages";
+    pagesInput.placeholder = "New pages";
     form.appendChild(pagesInput);
     
     //buttons on the form
@@ -110,16 +111,13 @@ function openForm(book) {
     confirmBtn.textContent = "Confirm form";
     // on click I call the function that modifies the book
     confirmBtn.addEventListener('click', () => {
-    let newAuthor = authorInput.value;
-    let newTitle = titleInput.value;
-    let newPages = pagesInput.value;
-    let info = [newTitle, newAuthor, newPages];
-    modifyBook(book, newTitle, newAuthor, newPages);
-    console.log(info);
-    return info;
-    });
-    formBtn.appendChild(confirmBtn);
+        let newAuthor = authorInput.value;
+        let newTitle = titleInput.value;
+        let newPages = pagesInput.value;
+        modifyBook(book, newTitle, newAuthor, newPages);
+        });
     
+    formBtn.appendChild(confirmBtn);    
 }
 
 function populateLibrary() {
@@ -134,27 +132,20 @@ function populateLibrary() {
             // inside a book div there are separate divs for each characteristics
             let title = document.createElement("p");
             title.className = "title";
-            title.textContent = "Title: " + book.title;
+            title.textContent = `Title: ${book.title}`;
             newDiv.appendChild(title);
 
             let author = document.createElement("p");
             author.className = "author";
-            author.textContent = "Author: " + book.author;
+            author.innerHTML = `Author:   ${book.author}`;
             newDiv.appendChild(author);
 
             let pages = document.createElement("p");
             pages.className = "pages";
-            pages.textContent = "Pages: " + book.pages;
+            pages.textContent = `Pages: \t\t ${book.pages}`;
             newDiv.appendChild(pages);
 
-            let alreadyRead = document.createElement("p");
-            alreadyRead.className = "alreadyRead";
-            alreadyRead.textContent = "Already read: " + book.alreadyRead;
-            newDiv.appendChild(alreadyRead);
-
             let hr = document.createElement('hr');
-            hr.style.size = '1px';
-            hr.style.width = '80%';
             newDiv.appendChild(hr);
             
             // buttons div
@@ -171,6 +162,26 @@ function populateLibrary() {
                     deleteBook(book);
                 });
                 buttonsDiv.appendChild(deleteBtn);
+                
+                // alreadyReadButton 
+                let alreadyRead = document.createElement("button");
+                alreadyRead.className = "read-btn btn";
+                alreadyRead.textContent = "Already read?";
+                alreadyRead.addEventListener('click', () => {
+                    let status = alreadyRead.textContent;
+                    if (status == "to read") {
+                        alreadyRead.textContent = "";
+                        alreadyRead.style.backgroundColor = "slategrey";
+                        alreadyRead.style.display = "inline-block";
+                        alreadyRead.className = "read-btn btn checked"
+                    }
+                    else {
+                        alreadyRead.textContent = "to read";
+                        alreadyRead.style.backgroundColor = "#f5cd79";
+                        alreadyRead.className = "read-btn btn"
+                    }
+                })
+                buttonsDiv.appendChild(alreadyRead);
 
                 // edit button
                 let editBtn = document.createElement("button");
@@ -178,9 +189,10 @@ function populateLibrary() {
                 editBtn.textContent = "edit";
                 buttonsDiv.appendChild(editBtn);
                 editBtn.addEventListener('click', () => {
-                    openForm(book);
-
+                    openForm("Modifying ", book);
                 });
+
+                
             
 
         main.appendChild(newDiv);
@@ -191,22 +203,16 @@ function populateLibrary() {
 ///////////////////////
 ////// buttons  ///////
 ///////////////////////
-addBtn.addEventListener('click', function() {
-    let newBook = new Book(null, null, null, null);
-    let newBookInfo = openForm(newBook);
-    // let title = prompt("title");
-    // let author = prompt("author");
-    // let pages = prompt("pages");
-    // let read = prompt('already read?')
-    addBook(newBook, newBookInfo[0], newBookInfo[1], newBookInfo[2]);
-    populateLibrary();
+addBtn.addEventListener('click', () => {
+    let newBook = addBook('title','author', 500);
+    openForm("Creating ", newBook);
 });
 
 
 ///////////////////////
 //////// test /////////
 ///////////////////////
-addBook('vivere', 'federico', 250, true );
-addBook('alloro', 'giulia', 500, false );
-addBook('prezzemolo', 'golia', 50, true );
+addBook('I promessi sposi', 'Alessandro Manzoni', 720);
+addBook('The lord of the rings', 'J. R. R. Tolkien', 2000);
+addBook('IT', 'Stephen King', 1138 );
 populateLibrary();
