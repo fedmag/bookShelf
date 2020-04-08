@@ -243,7 +243,7 @@ hr {
         flex-direction: column;
     }
     .book {
-        width: 400px;
+        width: 300px;
     }
     .cover {
         max-width: 150px;
@@ -255,6 +255,10 @@ hr {
         left: 0px;
         height: 500px;
         margin: auto;
+    }
+
+    .footer {
+        font-size: 12px;
     }
 
 }
