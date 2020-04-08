@@ -180,3 +180,18 @@ hr {
     height: auto;
     padding-top: 25px;
 }
+
+@media (max-width: 400px) {
+    html{
+        font-size: 15px;
+    }
+    #main {
+        flex-basis: 100%;
+        flex-direction: column;
+    }
+    .book {width: 80%;}
+    .cover {
+        max-width: 100px;
+        max-height: 100px;
+    }
+}
