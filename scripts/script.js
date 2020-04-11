@@ -89,6 +89,7 @@ function openForm(purpose, book) {
     formDiv.appendChild(form);
     formDiv.appendChild(formBtn);
 
+    console.log(book);
     // content on the form
     let formTitle = document.createElement('h1');
     formTitle.innerHTML = purpose + " book";
@@ -98,17 +99,20 @@ function openForm(purpose, book) {
     // title box
     let titleInput = document.createElement("input");
     titleInput.className = "input-box";
+    if (purpose == "Modifying ") titleInput.value = book.title;
     titleInput.placeholder = "New title";
     form.appendChild(titleInput);
     // autrhor box
     let authorInput = document.createElement("input");
     authorInput.className = "input-box";
+    if (purpose == "Modifying ") authorInput.value = book.author;
     authorInput.placeholder = "New author";
     form.appendChild(authorInput);
     //
     // pages box
     let pagesInput = document.createElement("input");
     pagesInput.className = "input-box";
+    if (purpose == "Modifying ") pagesInput.value = book.pages;
     pagesInput.placeholder = "New pages";
     form.appendChild(pagesInput);
     //
