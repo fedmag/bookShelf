@@ -7,7 +7,6 @@
  ///////////////////////
 ////// variables //////
 ///////////////////////
-let myLibrary = [];
 const main = document.getElementById('main');
 const addBtn = document.getElementById('add');
 const colorBtn = document.getElementById('color');
@@ -24,39 +23,52 @@ function Book(title, author, pages, cover) {
     this.pages = pages;
     this.cover = cover;
 }
-// each book has this method that returns all the information
-Book.prototype.info = function() {
-    if(this.alreadyRead) return `${this.title}, ${this.author}, ${this.pages}, you have read this book already!`;
-    else return `${this.title}, ${this.author}, ${this.pages}, you haven't read this book so far!`;
-}
 
 // adding books
-function addBook(title, author, pages, cover) {
-    if (typeof cover == 'undefined') cover = "https://image.freepik.com/free-vector/blank-book-cover-template-with-pages-front-side-standing_47649-397.jpg";
-    const newBook = new Book(title, author, pages, cover);
-    myLibrary.push(newBook);
-    return newBook;
+function addBook(title, author, pages, cover, readStatus) {
+    
+    if (typeof cover == 'undefined' || cover == "") cover = "https://image.freepik.com/free-vector/blank-book-cover-template-with-pages-front-side-standing_47649-397.jpg";
+    if (typeof readStatus == 'undefined' || readStatus == "") readStatus= ""
+    const newBookObj = {title: title, author: author, pages: pages, cover : cover, readStatus : readStatus};
+    // key used to ideintify the object, is the title w/o spaces
+    const bookObjKey = title.trim().replace(/ /g, "");
+    // saving the objcet
+    window.localStorage.setItem(bookObjKey, JSON.stringify(newBookObj));
+    // I need to return the object in order to call openForm (line 245)
+    return newBookObj;
 }
 
 function deleteBook (book) {
-    for (let i = 0; i < myLibrary.length; i++) {
-        const b = myLibrary[i];
+    for (let i = 0; i < localStorage.length; i++) {
+        // checking for each book in my local store if it's property title correspond to the one I want to delete
+        const b = JSON.parse(localStorage.getItem(localStorage.key(i)));
         if(b.title == book.title && b.author == book.author) {
-            myLibrary.splice(i,1);
+            // removing that item from the saved books
+            window.localStorage.removeItem(b.title.trim().replace(/ /g, ""));
         }
+        // redrawing the page
         populateLibrary();  
     }
 }
 
-function modifyBook(book, newTitle, newAuthor, newPages, newCover) {
-    if (newTitle != "") book.title = newTitle;
-    if (newAuthor != "")book.author = newAuthor;
-    if (!isNaN(newPages) && newPages != "") book.pages = newPages;
-    if (newCover != "") book.cover = newCover;
+function modifyBook(book, newTitle, newAuthor, newPages, newCover, newReadStatus) {
+    // getting the obj from the saved books that corresponds to the one we want to modify
+    let b = localStorage.getItem(book.title);
+    // then we delete it and create a new one with the new properties
+    deleteBook(book);
+    if (newTitle != "") b.title = newTitle;
+    if (newAuthor != "")b.author = newAuthor;
+    if (!isNaN(newPages) && newPages != "") b.pages = newPages;
+    if (newCover != "") b.cover = newCover;
+    if (newReadStatus != "") b.readStatus = newReadStatus;
+    // we add the newly created book to our file
+    addBook(newTitle, newAuthor, newPages, newCover, newReadStatus);
+    // redraw the page
     populateLibrary();
 }
 
 function openForm(purpose, book) {
+    // this could have been done in HTML changing only the display property through JS but I wanted to get practice with creating and manipulating HTML in JS
     let formDiv = document.createElement('div'); // outer container
     formDiv.className = "form-div";
     let form = document.createElement('form'); // input container
@@ -118,7 +130,7 @@ function openForm(purpose, book) {
         let newTitle = titleInput.value;
         let newPages = pagesInput.value;
         let newCover = coverInput.value;
-        modifyBook(book, newTitle, newAuthor, newPages, newCover);
+        modifyBook(book, newTitle, newAuthor, newPages, newCover, book.readStatus);
         formDiv.style.display = "none";
         });
     
@@ -128,8 +140,11 @@ function openForm(purpose, book) {
 function populateLibrary() {
     // refreshing the page
     main.innerHTML ='';
-    
-    for(let book of myLibrary) {
+    // looping over the books saved in my file
+    for (let z = 0; z < localStorage.length; z++) {
+ 
+        let book = JSON.parse(localStorage.getItem(localStorage.key(z)));
+        console.log(book);
         // each book goes in a new div whose class is BOOK
         let newDiv = document.createElement('div');
         newDiv.className = "book";
@@ -186,20 +201,39 @@ function populateLibrary() {
                 // alreadyReadButton 
                 let alreadyRead = document.createElement("button");
                 alreadyRead.className = "read-btn btn";
-                alreadyRead.textContent = "Already read?";
+                if (book.readStatus == "") alreadyRead.textContent = "Already read?";
+                else alreadyRead.textContent = book.readStatus;
+                console.log("-------");
+                // coloring the buttons when retrieving the information
+                if (book.readStatus == "read") {
+                    alreadyRead.textContent = "";
+                    alreadyRead.style.backgroundColor = "slategrey";
+                    alreadyRead.style.display = "inline-block";
+                    alreadyRead.className = "read-btn btn checked"
+                }
+                else if (book.readStatus == "to read") {
+                    alreadyRead.style.backgroundColor = "#f5cd79";
+                    alreadyRead.className = "read-btn btn"
+                }
+                // click function
                 alreadyRead.addEventListener('click', () => {
                     let status = alreadyRead.textContent;
-                    if (status == "to read") {
+                    if(status == "Already read?") status = "to read";
+                    else status = book.readStatus;
+                    if (status == "read") {
+                        book.readStatus = "to read";
                         alreadyRead.textContent = "";
                         alreadyRead.style.backgroundColor = "slategrey";
                         alreadyRead.style.display = "inline-block";
                         alreadyRead.className = "read-btn btn checked"
                     }
                     else {
+                        book.readStatus = "read";
                         alreadyRead.textContent = "to read";
                         alreadyRead.style.backgroundColor = "#f5cd79";
                         alreadyRead.className = "read-btn btn"
                     }
+                    modifyBook(book, book.title, book.author, book.pages, book.cover, book.readStatus);
                 })
                 buttonsDiv.appendChild(alreadyRead);
 
@@ -230,7 +264,7 @@ function randomColor () {
 ////// buttons  ///////
 ///////////////////////
 addBtn.addEventListener('click', () => {
-    let newBook = addBook('title','author', 500);
+    let newBook = addBook('title','author', 0);
     openForm("Creating ", newBook);
 });
 
@@ -244,7 +278,9 @@ colorBtn.addEventListener('click', () => {
 ///////////////////////
 //////// test /////////
 ///////////////////////
-addBook('I promessi sposi', 'Alessandro Manzoni', 720, "https://iicstoccarda.esteri.it/iic_stoccarda/resource/img/2019/01/manzonipromessisposi.jpg");
-addBook('The lord of the rings', 'J. R. R. Tolkien', 2000, "https://vignette.wikia.nocookie.net/lotr/images/d/db/51eq24cRtRL._SX331_BO1%2C204%2C203%2C200_.jpg/revision/latest?cb=20190723164240");
-addBook('IT', 'Stephen King', 1138, "https://i.pinimg.com/originals/11/c1/8f/11c18fbb50b3abe089e5f519cc1988cb.png" );
+
+// localStorage.clear();
+// addBook('I promessi sposi', 'Alessandro Manzoni', 720, "https://iicstoccarda.esteri.it/iic_stoccarda/resource/img/2019/01/manzonipromessisposi.jpg");
+// addBook('The lord of the rings', 'J. R. R. Tolkien', 2000, "https://vignette.wikia.nocookie.net/lotr/images/d/db/51eq24cRtRL._SX331_BO1%2C204%2C203%2C200_.jpg/revision/latest?cb=20190723164240");
+// addBook('IT', 'Stephen King', 1138, "https://i.pinimg.com/originals/11/c1/8f/11c18fbb50b3abe089e5f519cc1988cb.png" );
 populateLibrary();
