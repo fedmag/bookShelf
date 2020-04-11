@@ -12,37 +12,45 @@ const addBtn = document.getElementById('add');
 const colorBtn = document.getElementById('color');
 const root = document.documentElement;
 
+
 ///////////////////////
 ////// functions //////
 ///////////////////////
 
 // constructor for book
-function Book(title, author, pages, cover) {
+function Book(title, author, pages, cover, readStatus) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.cover = cover;
+    this.readStatus = readStatus;
+
 }
 
 // adding books
 function addBook(title, author, pages, cover, readStatus) {
     
     if (typeof cover == 'undefined' || cover == "") cover = "https://image.freepik.com/free-vector/blank-book-cover-template-with-pages-front-side-standing_47649-397.jpg";
-    if (typeof readStatus == 'undefined' || readStatus == "") readStatus= ""
+    if(typeof readStatus == 'undefined') readStatus = false;
     const newBookObj = {title: title, author: author, pages: pages, cover : cover, readStatus : readStatus};
     // key used to ideintify the object, is the title w/o spaces
     const bookObjKey = title.trim().replace(/ /g, "");
     // saving the objcet
     window.localStorage.setItem(bookObjKey, JSON.stringify(newBookObj));
     // I need to return the object in order to call openForm (line 245)
+
+    console.log("Creating: ");
+    console.log(newBookObj);
     return newBookObj;
 }
 
 function deleteBook (book) {
+    console.log("Deleting: ");
+    console.log(book);
     for (let i = 0; i < localStorage.length; i++) {
         // checking for each book in my local store if it's property title correspond to the one I want to delete
         const b = JSON.parse(localStorage.getItem(localStorage.key(i)));
-        if(b.title == book.title && b.author == book.author) {
+        if(b.title == book.title && b.author == book.author && b.page == book.page && b.cover == book.cover && b.readStatus == book.readStatus) {
             // removing that item from the saved books
             window.localStorage.removeItem(b.title.trim().replace(/ /g, ""));
         }
@@ -53,16 +61,18 @@ function deleteBook (book) {
 
 function modifyBook(book, newTitle, newAuthor, newPages, newCover, newReadStatus) {
     // getting the obj from the saved books that corresponds to the one we want to modify
-    let b = localStorage.getItem(book.title);
+    console.log("Modifying: ");
+    console.log(book);
     // then we delete it and create a new one with the new properties
     deleteBook(book);
-    if (newTitle != "") b.title = newTitle;
-    if (newAuthor != "")b.author = newAuthor;
-    if (!isNaN(newPages) && newPages != "") b.pages = newPages;
-    if (newCover != "") b.cover = newCover;
-    if (newReadStatus != "") b.readStatus = newReadStatus;
+    if (newTitle == "") newTitle = book.title;
+    if (newAuthor == "") newAuthor = book.author;
+    // if (!isNaN(newPages) || newPages != book.pages ) newPages = book.pages ;
+    if (""+newPages == "") newPages = ""+book.pages;
+    if (newCover == "") newCover = book.cover;
     // we add the newly created book to our file
     addBook(newTitle, newAuthor, newPages, newCover, newReadStatus);
+
     // redraw the page
     populateLibrary();
 }
@@ -144,7 +154,6 @@ function populateLibrary() {
     for (let z = 0; z < localStorage.length; z++) {
  
         let book = JSON.parse(localStorage.getItem(localStorage.key(z)));
-        console.log(book);
         // each book goes in a new div whose class is BOOK
         let newDiv = document.createElement('div');
         newDiv.className = "book";
@@ -153,7 +162,7 @@ function populateLibrary() {
             //cover
             let cover = document.createElement("img");
             cover.className = "cover center";
-            if(book.cover != "" || typeof book.cover === undefined || book.cover == null){
+            if(book.cover != "" || typeof book.cover == 'undefined'){
                 cover.src = book.cover;
                 cover.alt = "";
             }
@@ -201,40 +210,35 @@ function populateLibrary() {
                 // alreadyReadButton 
                 let alreadyRead = document.createElement("button");
                 alreadyRead.className = "read-btn btn";
-                if (book.readStatus == "") alreadyRead.textContent = "Already read?";
-                else alreadyRead.textContent = book.readStatus;
-                console.log("-------");
                 // coloring the buttons when retrieving the information
-                if (book.readStatus == "read") {
+                if (book.readStatus == true) {
                     alreadyRead.textContent = "";
                     alreadyRead.style.backgroundColor = "slategrey";
                     alreadyRead.style.display = "inline-block";
                     alreadyRead.className = "read-btn btn checked"
                 }
-                else if (book.readStatus == "to read") {
+                else if (book.readStatus == false) {
+                    alreadyRead.textContent = "to read";
                     alreadyRead.style.backgroundColor = "#f5cd79";
                     alreadyRead.className = "read-btn btn"
                 }
                 // click function
                 alreadyRead.addEventListener('click', () => {
-                    let status = alreadyRead.textContent;
-                    if(status == "Already read?") status = "to read";
-                    else status = book.readStatus;
-                    if (status == "read") {
-                        book.readStatus = "to read";
+                    if (book.readStatus == true) {
+                        book.readStatus = false;
                         alreadyRead.textContent = "";
                         alreadyRead.style.backgroundColor = "slategrey";
                         alreadyRead.style.display = "inline-block";
                         alreadyRead.className = "read-btn btn checked"
                     }
                     else {
-                        book.readStatus = "read";
+                        book.readStatus = true;
                         alreadyRead.textContent = "to read";
                         alreadyRead.style.backgroundColor = "#f5cd79";
                         alreadyRead.className = "read-btn btn"
                     }
                     modifyBook(book, book.title, book.author, book.pages, book.cover, book.readStatus);
-                })
+                });
                 buttonsDiv.appendChild(alreadyRead);
 
                 // edit button
@@ -264,7 +268,7 @@ function randomColor () {
 ////// buttons  ///////
 ///////////////////////
 addBtn.addEventListener('click', () => {
-    let newBook = addBook('title','author', 0);
+    let newBook = addBook('title','author', "0", "", false);
     openForm("Creating ", newBook);
 });
 

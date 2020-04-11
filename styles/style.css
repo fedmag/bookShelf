@@ -155,7 +155,7 @@ hr {
     margin: auto;
     margin-top: 250px;
     margin-bottom: 50px;
-    
+
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -169,12 +169,14 @@ hr {
     font-size: 20px;
     margin: auto;
     color: white;
-    margin-bottom: 10px;
     font-family: var(--main-font);
     display: inline;
     -webkit-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
     -moz-box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
     box-shadow: 9px 8px 21px -6px rgba(0,0,0,0.75);
+}
+#add {
+    margin-bottom: 15px;
 }
 #color {
     font-size: 20px;
