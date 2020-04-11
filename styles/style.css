@@ -151,13 +151,15 @@ hr {
 }
 
 .buttons {
-    margin-top: 50%;
+    
     margin: auto;
+    margin-top: 250px;
+    margin-bottom: 50px;
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-bottom: 50px;
-    margin-top: 10%;
+    
     width: 200px;
     height: auto;
     text-align: center;
